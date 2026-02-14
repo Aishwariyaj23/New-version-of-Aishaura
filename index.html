@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aishaura Microgreens</title>
+  <meta name="description" content=" Aishaura microgreens offers fresh, chemical-free microgreens grown locally in Bangalore. Packed with nutrition, delivered to your doorstep. Order now for healthy living!">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<header aria-label="Site logo and brand title">
+  <img id="logo-img" class="logo" alt="Aishaura Microgreens Logo">
+  <h1>Aishaura Microgreens</h1>
+  <div><p>Fresh, Sustainable Nutrition for Every Home</p>
+
+  </div>
+</header>
+
+<div id="cart-container">
+  <div id="cart-icon">🛒 <span id="cart-count">0</span></div>
+  <div id="cart-dropdown">
+    <div id="cart-items"></div>
+    <div id="cart-summary">
+      <div>Subtotal: <span id="cart-subtotal">₹0</span></div>
+      <div>Delivery: <span id="cart-delivery">FREE</span></div>
+      <div id="cart-total">Total: ₹0</div>
+    </div>
+    <button id="view-cart">View Cart</button>
+    <button id="checkout-btn">Proceed to Checkout</button>
+    <button id="clear-cart">Clear Cart</button>
+  </div>
+</div>
+
+<nav aria-label="Main site navigation">
+  <a href="#about">About</a>
+  <a href="#benefits">Why Microgreens</a>
+  <a href="#why-us">Why Us</a>
+  <a href="#products">Products</a>
+  <a href="#recipes">Recipes</a>
+  <a href="#" id="nav-contact" title="Contact us" aria-label="Contact us"><i class="fab fa-whatsapp"></i> Contact</a>
+</nav>
+
+
+<section id="about">
+  <div class="about-container">
+    <div class="about-content">
+      <h2>About Us</h2>
+      <p><strong>Founded by Aishwarya</strong>, Aishaura Microgreens is rooted in a passion for nutrition, sustainability, and supporting our vibrant local community.</p>
+      <ul>
+        <li><strong>Family-run urban farm</strong> with a personal touch</li>
+        <li><strong>Eco-conscious:</strong> minimal waste, local delivery, & responsible practices</li>
+        <li><strong>Transparent food traceability</strong> — from seed to plate</li>
+         <li><strong> 100% organic </strong> <strong>Freshly harvested no chemicals used</strong></li>
+        </ul>
+    </div>
+    <div class="about-image">
+      <img src="images/about-image.jpg" alt="Aishaura Microgreens Farm">
+    </div>
+  </div>
+</section>
+
+<section id="benefits">
+  <div class="benefits-container">
+    <div class="benefits-image">
+      <img src="images/microgreens-benefits.jpg" alt="Nutritious Microgreens">
+    </div>
+    <div class="benefits-content">
+      <h2>Why Choose Microgreens?</h2>
+      <ul>
+        <li><strong>Up to 40x more nutrients</strong> than mature greens</li>
+        <li><strong>Harvest-ready in 7–10 days</strong> — ultra fresh produce always</li>
+        <li><strong>Eco-friendly farming</strong>: 90% less water, no chemical pesticides</li>
+        <li><strong>Flavor variety</strong>: from spicy to sweet to nutty</li>
+        <li><strong>Perfect for every dish</strong>: salads, smoothies, sandwiches, curries & pizza!</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="why-us">
+  <h2>Why Choose Us?</h2>
+  <ul>
+    <li>Homegrown & pesticide-free using sustainable practices</li>
+    <li>Harvest-to-door freshness: orders cut the same day of delivery</li>
+    <li>Eco packaging and farm-to-fork traceability</li>
+  </ul>
+</section>
+
+<section id="products">
+  <h2>Our Products</h2>
+  <div class="gallery">
+    <div class="card" role="listitem">
+      <img src="images/sunflower.jpg" alt="Sunflower Microgreens">
+      <div class="card-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">(248)</span>
+      </div>
+      <div class="gallery-title">Sunflower Microgreens</div>
+      <div class="product-price">
+        <span class="discounted-price">₹100</span>
+        <span class="original-price">₹180</span>
+        <span class="savings-badge">44% OFF</span>
+      </div>
+      <ul class="benefits-list">
+        <li>High in protein</li>
+        <li>Rich in vitamin E & B6</li>
+        <li>Muscle recovery support</li>
+      </ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart" data-product="Sunflower Microgreens" data-price="100">+ Add to Cart</button>
+    </div>
+    
+    <div class="card" role="listitem">
+      <img src="images/radish.jpg" alt="Radish Microgreens">
+      <div class="card-rating">
+        <span class="stars">★★★★☆</span>
+        <span class="rating-count">(156)</span>
+      </div>
+      <div class="gallery-title">Radish Microgreens</div>
+      <div class="product-price">
+        <span class="discounted-price">₹100</span>
+        <span class="original-price">₹180</span>
+        <span class="savings-badge">44% OFF</span>
+      </div>
+      <ul class="benefits-list">
+        <li>Spicy & vitamin-rich</li>
+        <li>Supports digestion</li>
+        <li>High in vitamin C</li>
+      </ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart" data-product="Radish Microgreens" data-price="100">+ Add to Cart</button>
+    </div>
+    
+    <div class="card" role="listitem">
+      <img src="images/mustard.png" alt="Mustard Microgreens">
+      <div class="card-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">(89)</span>
+      </div>
+      <div class="gallery-title">Mustard Microgreens</div>
+      <div class="product-price">
+        <span class="discounted-price">₹90</span>
+        <span class="original-price">₹170</span>
+        <span class="savings-badge">47% OFF</span>
+      </div>
+      <ul class="benefits-list">
+        <li>Bold & fiery flavor</li>
+        <li>Rich in vitamin K</li>
+        <li>Bone health support</li>
+      </ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart" data-product="Mustard Microgreens" data-price="90">+ Add to Cart</button>
+    </div>
+    
+    <div class="card" role="listitem">
+      <img src="images/wheat-grass.jpg" alt="Wheat Grass">
+      <div class="card-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">(312)</span>
+      </div>
+      <div class="gallery-title">Wheat Grass</div>
+      <div class="product-price">
+        <span class="discounted-price">₹120</span>
+        <span class="original-price">₹200</span>
+        <span class="savings-badge">40% OFF</span>
+      </div>
+      <ul class="benefits-list">
+        <li>Nutrient-dense superfood</li>
+        <li>Powerful detoxifier</li>
+        <li>Boosts immunity</li>
+      </ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart" data-product="Wheat Grass" data-price="120">+ Add to Cart</button>
+    </div>
+    
+    <div class="card" role="listitem">
+      <img src="images/mixed.jpg" alt="Mixed Microgreens">
+      <div class="card-rating">
+        <span class="stars">★★★★☆</span>
+        <span class="rating-count">(127)</span>
+      </div>
+      <div class="gallery-title">Mixed Microgreens</div>
+      <div class="product-price">
+        <span class="discounted-price">₹120</span>
+        <span class="original-price">₹200</span>
+        <span class="savings-badge">40% OFF</span>
+      </div>
+      <ul class="benefits-list">
+        <li>Diverse nutrient range</li>
+        <li>Multiple health benefits</li>
+        <li>Variety of flavors</li>
+      </ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart" data-product="Mixed Microgreens" data-price="120">+ Add to Cart</button>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section id="recipes">
+  <h2>Recipe Ideas</h2>
+  <div class="gallery recipes-flex">
+    <div class="card recipe-art">
+      <img src="images/avocado-toast.jpg" alt="Microgreens Avocado Toast">
+      <div class="gallery-title">Microgreens Avocado Toast</div>
+    </div>
+    <div class="card recipe-art">
+      <img src="images/sunflower-smoothie.jpg" alt="Sunflower Green Smoothie">
+      <div class="gallery-title">Sunflower Green Smoothie</div>
+    </div>
+    <div class="card recipe-art">
+      <img src="images/buddha-bowl.jpg" alt="Microgreen Buddha Bowl">
+      <div class="gallery-title">Microgreen Buddha Bowl</div>
+    </div>
+    <div class="card recipe-art">
+      <img src="images/radish-salad.jpg" alt="Radish Microgreen Salad">
+      <div class="gallery-title">Radish Microgreen Salad</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <p><b>Email:</b> aishauramicrogreens@gmail.com</p>
+  <p><b>WhatsApp: 8073047946 </b></p>
+  <p><b>Instagram: aishaura_microgreens</b></p>
+  <p><b>Delivery:</b> Every Friday • Book by Thursday night</p>
+  <p><b>Delivered throughout Bangalore</b></p>
+</section>
+
+<!-- Product Modal -->
+<div id="product-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-body">
+      <img id="modal-image" src="" alt="">
+      <h2 id="modal-title"></h2>
+      <div class="modal-price" id="modal-price"></div>
+      <div id="modal-description"></div>
+      <h3>Health Benefits</h3>
+      <ul id="modal-benefits"></ul>
+      <h3>How to Use</h3>
+      <ul id="modal-usage"></ul>
+      <div class="quantity-selector">
+        <button class="quantity-btn minus">-</button>
+        <input type="number" value="50" min="50" step="50" class="quantity-input">
+        <span class="quantity-unit">gm</span>
+        <button class="quantity-btn plus">+</button>
+      </div>
+      <button class="add-to-cart-modal" id="add-to-cart-modal">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkout-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="checkout-steps">
+      <div class="step active" data-step="1">1. Review Order</div>
+      <div class="step" data-step="2">2. Customer Info</div>
+      <div class="step" data-step="3">3. Payment</div>
+    </div>
+    
+    <div id="checkout-content">
+      <!-- Step 1: Review Order -->
+      <div class="checkout-step" id="step-1">
+        <h2>Review Your Order</h2>
+        <div class="order-summary">
+          <div class="order-items" id="checkout-items"></div>
+          <div class="order-totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span id="checkout-subtotal">₹0</span>
+            </div>
+            <div class="total-row">
+              <span>Delivery:</span>
+              <span id="checkout-delivery">FREE</span>
+            </div>
+            <div class="total-row grand-total">
+              <span>Total:</span>
+              <span id="checkout-total">₹0</span>
+            </div>
+          </div>
+        </div>
+        <div class="checkout-actions">
+          <button class="btn-continue" id="btn-continue">Continue to Checkout</button>
+        </div>
+      </div>
+      
+      <!-- Step 2: Customer Info -->
+      <div class="checkout-step" id="step-2" style="display:none;">
+        <h2>Customer Information</h2>
+        <form id="customer-info-form">
+          <div class="form-group">
+            <label for="customer-name">Full Name *</label>
+            <input type="text" id="customer-name" required>
+          </div>
+          <div class="form-group">
+            <label for="customer-phone">Phone Number *</label>
+            <input type="tel" id="customer-phone" required>
+          </div>
+          <div class="form-group">
+            <label for="customer-email">Email Address *</label>
+            <input type="email" id="customer-email" required>
+          </div>
+          <div class="form-group">
+            <label for="customer-address">Delivery Address *</label>
+            <textarea id="customer-address" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="customer-notes">Special Instructions</label>
+            <textarea id="customer-notes" rows="2"></textarea>
+          </div>
+          <div class="checkout-actions">
+            <button type="button" class="btn-back">Back</button>
+            <button type="button" class="btn-continue" id="btn-to-payment">Continue to Payment</button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Step 3: Payment -->
+<div class="checkout-step" id="step-3" style="display:none;">
+  <h2>Payment Details</h2>
+
+  <div class="payment-options">
+    <div class="payment-option active" data-method="upi">
+      <div class="payment-icon">💳</div>
+
+      <div class="payment-details">
+        <h3>UPI Payment</h3>
+
+        <div class="upi-qr">
+          <div id="upi-qr-code"></div>
+        </div>
+
+        <p class="small">Scan this QR code or click below to pay with any UPI app.</p>
+
+        <div class="upi-details" style="display:block;">
+          <div class="upi-id">UPI ID: 9738560719-0@airtel</div>
+          <button class="upi-pay-button" id="upi-pay-button">Pay with UPI App</button>
+        </div>
+      </div>
+    </div>
+<!-- 
+    <div class="payment-option" data-method="cod">
+      <div class="payment-icon">💰</div>
+      <div class="payment-details">
+        <h3>Payment details will be shared shortly</h3>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="order-summary-payment">
+    <h3>Order Summary</h3>
+    <div id="payment-order-items"></div>
+    <div class="total-row grand-total">
+      <span>Total:</span>
+      <span id="payment-total">₹0</span>
+    </div>
+  </div>
+
+  <div class="checkout-actions">
+    <button type="button" class="btn-back">Back</button>
+    <button type="button" class="btn-submit" id="btn-place-order">Place Order</button>
+  </div>
+</div>
+      
+      <!-- Step 4: Confirmation -->
+      <div class="checkout-step" id="step-4" style="display:none;">
+        <h2>Order Confirmed!</h2>
+        <div class="confirmation-message">
+          <p>Thank you for your order! Your order ID is <span id="confirmation-id"></span>.</p>
+          <p>Total amount: <span id="confirmation-total"></span></p>
+          <p>We'll contact you shortly with delivery details.</p>
+          <p style="margin-top: 15px; font-size: 14px; color: #666;">📲 If you've already made the payment, please share the receipt on WhatsApp for faster processing.</p>
+        </div>
+        <div class="checkout-actions">
+          <button type="button" id="share-receipt-whatsapp" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Share Receipt via WhatsApp</button>
+          <button type="button" class="btn-continue" onclick="document.getElementById('checkout-modal').style.display='none'">Continue Shopping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<!-- Contact Modal (global) -->
+<div id="contact-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-body">
+      <h2>Contact Us</h2>
+      <p>Have a question or need help? Send us a message and we'll get back to you shortly.</p>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="contact-name">Name</label>
+          <input type="text" id="contact-name" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-phone">Phone</label>
+          <input type="tel" id="contact-phone" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email" />
+        </div>
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="4" required></textarea>
+        </div>
+        <div class="checkout-actions">
+          <button type="button" id="contact-send-whatsapp" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews Modal -->
+<div id="reviews-modal" class="modal">
+  <div class="modal-content reviews-modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-body">
+      <div class="reviews-header">
+        <h2 id="reviews-product-name"></h2>
+        <div class="reviews-rating">
+          <span id="reviews-average-rating"></span>
+          <span id="reviews-count"></span>
+        </div>
+      </div>
+      <div class="reviews-list" id="reviews-list">
+        <!-- Reviews will be populated here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="fullpage-loader" class="microgreens-loader">
+  <div class="loader-content">
+    <div class="loader-animation">
+      <!-- Animated plant growth -->
+      <div class="seed"></div>
+      <div class="sprout"></div>
+      <div class="leaf leaf-1"></div>
+      <div class="leaf leaf-2"></div>
+    </div>
+    <p class="loader-text">Growing your fresh order...</p>
+  </div>
+</div>
+<!-- Floating WhatsApp contact (persistent) -->
+<a href="#" id="floating-whatsapp" class="floating-whatsapp" aria-label="Contact us on WhatsApp" title="Contact us on WhatsApp" data-tooltip="Contact us on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+  <span class="whatsapp-text">Chat</span>
+  <span class="wa-badge" id="wa-badge" aria-hidden="true">1</span>
+  <button type="button" class="wa-dismiss" id="wa-dismiss" aria-label="Dismiss contact button">×</button>
+</a>
+<footer>
+  &copy; 2025 Aishaura Microgreens • Grown With Love • Packed With Nutrition
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
