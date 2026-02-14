@@ -1,0 +1,323 @@
+# Complete Google Sheets + Google Apps Script Setup Guide
+## For Aishaura Microgreens Database
+
+---
+
+## OVERVIEW
+
+Your website now fetches product data and reviews from Google Sheets instead of hardcoded values. This means:
+- ✅ Easy to update products/reviews without touching code
+- ✅ Real-time changes reflected on your website
+- ✅ Fallback to hardcoded data if API fails (always works)
+- ✅ No database hosting costs
+
+---
+
+## STEP 1: Create Google Sheet
+
+### 1.1 Create New Google Sheet
+1. Go to **https://sheets.google.com**
+2. Click **"+ New"** → **"Spreadsheet"**
+3. Name it: **"Aishaura Microgreens Database"**
+4. **Save the Sheet ID** from the URL:
+   - URL: `https://docs.google.com/spreadsheets/d/1mY3xY2Z1A2B3C4D5E6F7G8H9I0J1K2L3/`
+   - **Sheet ID**: `1mY3xY2Z1A2B3C4D5E6F7G8H9I0J1K2L3`
+
+---
+
+## STEP 2: Create "Products" Sheet
+
+### 2.1 Rename First Sheet
+1. Right-click the "Sheet1" tab at bottom
+2. Select **"Rename"**
+3. Type: **`Products`**
+
+### 2.2 Add Headers (Row 1)
+Copy-paste these headers into cells A1-F1:
+```
+Product Name | Price | Image | Description | Benefits | Usage
+```
+
+### 2.3 Add Sample Data (Row 2 onwards)
+Each column:
+- **A: Product Name** → `Sunflower Microgreens`
+- **B: Price** → `100` (just the number)
+- **C: Image** → `images/sunflower.jpg`
+- **D: Description** → `Sunflower microgreens are packed with nutrients...`
+- **E: Benefits** → Separate with semicolons: `High in protein; Rich in vitamin E & B6; Contains magnesium`
+- **F: Usage** → Separate with semicolons: `Add to salads; Top avocado toast; Blend into smoothies`
+
+**Example Row:**
+```
+Sunflower Microgreens | 100 | images/sunflower.jpg | Sunflower microgreens are packed with nutrients and have a delightful crunchy texture. | High in protein; Rich in vitamin E & B6; Contains magnesium; Energy support | Add to salads; Top avocado toast; Blend into smoothies; Use as garnish
+```
+
+**Complete All 5 Products:**
+1. Sunflower Microgreens - ₹100
+2. Radish Microgreens - ₹100
+3. Mustard Microgreens - ₹90
+4. Wheat Grass - ₹120
+5. Mixed Microgreens - ₹120
+
+---
+
+## STEP 3: Create "Reviews" Sheet
+
+### 3.1 Add New Sheet
+1. Click **"+"** button at the bottom
+2. Name it: **`Reviews`**
+
+### 3.2 Add Headers (Row 1)
+```
+Product Name | Reviewer Name | Rating | Review Text | Date | Review Count | Avg Rating
+```
+
+### 3.3 Add Sample Reviews
+For each product, add 3-5 reviews. Example:
+
+```
+Sunflower Microgreens | Priya M. | 5 | Absolutely fresh and packed with nutrients! Highly recommend. | 2 weeks ago | 248 | 5
+Sunflower Microgreens | Amit K. | 5 | Great quality microgreens. Perfect for smoothie bowls. | 1 week ago | 248 | 5
+Sunflower Microgreens | Sneha P. | 4 | Good taste and freshness. Quick delivery to Bangalore. | 3 days ago | 248 | 5
+```
+
+**What Each Column Means:**
+- **A: Product Name** → Must match exactly with Products sheet (case-sensitive)
+- **B: Reviewer Name** → Customer's name
+- **C: Rating** → 1-5 stars
+- **D: Review Text** → What the customer said
+- **E: Date** → e.g., "2 weeks ago", "yesterday", "1 day ago"
+- **F: Review Count** → Total reviews for this product (from your internal data)
+- **G: Avg Rating** → Average rating (e.g., 4.8)
+
+---
+
+## STEP 4: Create Google Apps Script
+
+### 4.1 Open Apps Script Editor
+1. In your Google Sheet, click **Tools** → **Script Editor**
+2. A new tab will open
+
+### 4.2 Delete Default Code
+Select all code and delete it (Ctrl+A, Delete)
+
+### 4.3 Copy-Paste the Google Apps Script Code
+
+Go to the file **`google-apps-script.gs`** in your project folder and copy ALL the code.
+
+Paste it into the Apps Script editor.
+
+### 4.4 Update the SHEET_ID
+In the Apps Script code, find this line (around line 5):
+```javascript
+const SHEET_ID = 'YOUR_SHEET_ID_HERE'; // Replace with your Google Sheet ID
+```
+
+Replace `YOUR_SHEET_ID_HERE` with the Sheet ID you saved in Step 1.1.
+
+Example:
+```javascript
+const SHEET_ID = '1mY3xY2Z1A2B3C4D5E6F7G8H9I0J1K2L3';
+```
+
+### 4.5 Save the Project
+Click **Save** (Ctrl+S)
+
+When prompted, name the project: **`Aishaura API`**
+
+---
+
+## STEP 5: Deploy as Web App
+
+### 5.1 Create New Deployment
+1. Click **Deploy** button (top-right)
+2. Select **"New Deployment"**
+
+### 5.2 Configure Deployment
+1. Click the **gear icon** next to "New Deployment"
+2. Select Type: **Web app**
+3. Execute as: **Your Google Account** (select your email)
+4. Who has access: **Anyone**
+5. Click **Deploy**
+
+### 5.3 Save Deployment URL
+A dialog will appear with your deployment URL. It looks like:
+```
+https://script.google.com/macros/s/AKfycbyXXXXXXXXXXXXXXXXXXXXXXXXXXXX/usercachetext?user_cache=bypass
+```
+
+**Copy and save this URL** - you'll need it in Step 6.
+
+---
+
+## STEP 6: Update app.js with Deployment URL
+
+### 6.1 Open app.js in Your Project
+1. Go back to your project folder
+2. Open **app.js**
+
+### 6.2 Find the API URL Line
+Search for (around line 33):
+```javascript
+const GOOGLE_SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyaXzkzgg7-02Pr3uP57ComlaPPRsT4VBYDvSkGrc8qDQwchMuiJQeCRN6Amc9VLLKb/exec?action=all";
+```
+
+### 6.3 Replace with Your Deployment URL
+Replace it with YOUR deployment URL from Step 5.3:
+```javascript
+const GOOGLE_SHEETS_API_URL = "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID_HERE/usercachetext?user_cache=bypass&action=all";
+```
+
+**Important:** Keep the `?action=all` at the end!
+
+### 6.4 Save the File
+
+---
+
+## STEP 7: Test It!
+
+### 7.1 Open Your Website
+1. Open your website in a browser
+2. Press **F12** to open Developer Console
+
+### 7.2 Check Console for Success Messages
+You should see:
+```
+✓ Product data loaded from Google Sheets: 5 products
+```
+
+**If you see this, everything is working! 🎉**
+
+### 7.3 Test the Reviews
+1. Scroll to the Products section
+2. Click on any product's rating (★★★★★)
+3. The reviews modal should open with customer reviews
+
+### 7.4 Troubleshooting
+If it doesn't work, check console for errors:
+- **CORS error**: Google Apps Script might need re-deployment
+- **Failed to fetch**: Check your API URL is correct
+- **No data**: Check Sheet ID in Apps Script matches your sheet
+
+If all else fails, the site will use **hardcoded fallback data** and still work.
+
+---
+
+## STEP 8: Update Data (Easy!)
+
+### 8.1 Add New Product
+1. Open your Google Sheet
+2. Go to **Products** sheet
+3. Add a new row with product info
+4. Website will fetch it automatically on next page load
+
+### 8.2 Add Customer Review
+1. Go to **Reviews** sheet
+2. Add new row with review details
+3. Make sure Product Name matches exactly (case-sensitive)
+4. Website updates automatically
+
+### 8.3 Update Prices
+1. Go to **Products** sheet
+2. Change the price in column B
+3. Refresh website to see new price
+
+---
+
+## API ENDPOINTS
+
+Your Google Apps Script API supports these queries:
+
+### Get All Data (Products + Reviews)
+```
+https://your-deployment-url?action=all
+```
+Returns: All products with their reviews
+
+### Get Only Products
+```
+https://your-deployment-url?action=products
+```
+Returns: Product info without reviews
+
+### Get Reviews for Specific Product
+```
+https://your-deployment-url?action=reviews&product=Sunflower%20Microgreens
+```
+Returns: Only reviews for that product
+
+---
+
+## SYSTEM FLOW
+
+```
+Google Sheet (Your Data)
+        ↓
+Google Apps Script (Reads Sheet & Converts to JSON)
+        ↓
+Your Website (Fetches JSON via API)
+        ↓
+Browser (Displays Products & Reviews)
+        ↓
+User clicks rating
+        ↓
+Reviews Modal Opens with Customer Feedback
+```
+
+---
+
+## WHAT THE CODE DOES
+
+**app.js Changes:**
+- Calls `fetchProductDataFromSheets()` on page load
+- Fetches from Google Apps Script API
+- If API fails, uses hardcoded `loadFallbackData()`
+- Everything else works exactly the same
+
+**Benefits:**
+- Website is always functional (fallback data)
+- Easy to manage data without touching code
+- Real-time updates (just edit Google Sheet)
+- No database hosting needed
+- Free tier is sufficient
+
+---
+
+## QUICK REFERENCE
+
+| Task | Where | How |
+|------|-------|-----|
+| Add new product | Google Sheet > Products | Add row with product info |
+| Add customer review | Google Sheet > Reviews | Add row with review data |
+| Change product price | Google Sheet > Products > Column B | Just change the number |
+| Update review count | Google Sheet > Reviews > Column F | Update the number |
+| Fix API issues | Google Apps Script > Deploy | Click "Manage Deployments" → Re-deploy |
+
+---
+
+## NEED HELP?
+
+### Check Browser Console (F12)
+Look for these messages:
+- ✅ `✓ Product data loaded from Google Sheets`
+- ⚠️ `Failed to fetch from Google Sheets API` (using fallback)
+- ❌ `Error` messages (screenshot it and debug)
+
+### Common Issues
+1. **Whitespace in product names**: Products must match exactly between sheets
+2. **API URL wrong**: Double-check deployment URL in app.js
+3. **Sheet ID wrong**: Verify in Apps Script code
+4. **Sheet not shared**: Make sure ALL sheets are readable
+
+---
+
+## Success Criteria ✓
+
+- [ ] Google Sheet created with Products & Reviews
+- [ ] Apps Script deployed as Web App
+- [ ] Deployment URL added to app.js
+- [ ] Website loads without errors (F12 console)
+- [ ] Can click on product ratings to see reviews
+- [ ] "✓ Product data loaded from Google Sheets" in console
+
+You're all set! 🌱
