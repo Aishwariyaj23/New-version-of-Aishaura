@@ -1,0 +1,70 @@
+# Google Sheets + Apps Script Setup for Reviews & Ratings
+
+## STEP 1: Create Google Sheet Structure
+
+### 1.1 Create a new Google Sheet
+- Go to https://sheets.google.com
+- Click "New" → "Spreadsheet"
+- Name it: **"Aishaura Microgreens Database"**
+- Note down the Sheet ID (from the URL: `https://docs.google.com/spreadsheets/d/{SHEET_ID}/`)
+
+### 1.2 Create Sheet "Products"
+**Column Headers (Row 1):**
+```
+| Product Name | Price | Image | Description | Benefits | Usage |
+```
+
+**Sample Data:**
+```
+Sunflower Microgreens | 100 | images/sunflower.jpg | Sunflower microgreens are packed with nutrients... | High in protein; Rich in vitamin E & B6; ... | Add to salads; Top avocado toast; ... |
+```
+
+### 1.3 Create Sheet "Reviews"
+**Column Headers (Row 1):**
+```
+| Product Name | Reviewer Name | Rating | Review Text | Date | Review Count | Avg Rating |
+```
+
+**Sample Data:**
+```
+Sunflower Microgreens | Priya M. | 5 | Absolutely fresh and packed with nutrients! | 2 weeks ago | 248 | 5 |
+Sunflower Microgreens | Amit K. | 5 | Great quality microgreens. Perfect for smoothie bowls. | 1 week ago | 248 | 5 |
+Radish Microgreens | Rajesh T. | 5 | Love the spicy kick! Amazing for my salads. | 1 week ago | 156 | 4.5 |
+```
+
+---
+
+## STEP 2: Create Google Apps Script
+
+### 2.1 Open Apps Script Editor
+1. In your Google Sheet, click **Tools** → **Script Editor**
+2. Delete the default code
+3. Copy the code from **"apps-script-code.gs"** (provided below)
+4. Save the project as: `Aishaura API`
+
+### 2.2 Deploy as Web App
+1. Click **Deploy** → **New Deployment**
+2. Select type: **Web app**
+3. Execute as: Your Google Account
+4. Who has access: **Anyone**
+5. Click Deploy
+6. Copy the **Deployment URL** (you'll need this in app.js)
+7. Example: `https://script.google.com/macros/d/{DEPLOYMENT_ID}/usercachetext?user_cache=bypass`
+
+---
+
+## STEP 3: Update app.js
+- Replace the hardcoded `productData` fetch with the API call
+- See **"app-js-modifications.js"** for the code changes
+
+---
+
+## Configuration Checklist
+- [ ] Google Sheet created
+- [ ] "Products" sheet with data
+- [ ] "Reviews" sheet with data
+- [ ] Apps Script code added
+- [ ] Deployed as Web App
+- [ ] Deployment URL copied
+- [ ] API URL added to app.js
+- [ ] Test the fetch in browser console
