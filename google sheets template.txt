@@ -1,0 +1,126 @@
+# Quick Copy-Paste: Google Sheet Data Template
+
+## PRODUCTS SHEET - Complete Data
+
+```
+Product Name | Price | Image | Description | Benefits | Usage
+Sunflower Microgreens | 100 | images/sunflower.jpg | Sunflower microgreens are packed with nutrients and have a delightful crunchy texture. | High in protein; Rich in vitamin E & B6; Contains magnesium; Energy support | Add to salads; Top avocado toast; Blend into smoothies; Use as garnish
+Radish Microgreens | 100 | images/radish.jpg | Spicy radish microgreens add a kick to any dish while providing powerful nutrients. | High in vitamin C; Potent antioxidant; Supports digestion; Regulates blood pressure | Add to tacos; Mix in stir-fries; Combine with salads; Asian garnish
+Mustard Microgreens | 90 | images/mustard.png | Mustard microgreens bring bold flavor and impressive health benefits. | Rich in Vitamin K; Supports detoxification; Boosts metabolism; High in antioxidants | Add to sandwiches; Mix in omelets; Combine with cheese; Use in dressings
+Wheat Grass | 120 | images/wheat-grass.jpg | Wheat grass is a nutrient-packed superfood known for its high chlorophyll content and detoxifying properties. | Rich in chlorophyll; 17 amino acids; Vitamins A, C, E; Powerful detoxifier | Juice with lemon; Add to smoothies; Mix with water; Use in salads
+Mixed Microgreens | 120 | images/mixed.jpg | Our mixed microgreens provide a variety of flavors and nutrients in one convenient package. | Diverse nutrients; Multiple health benefits; Antioxidant variety; Overall wellness | Base for salads; Wraps and sandwiches; Pizza topping; Grain bowls
+```
+
+---
+
+## REVIEWS SHEET - Complete Data
+
+```
+Product Name | Reviewer Name | Rating | Review Text | Date | Review Count | Avg Rating
+Sunflower Microgreens | Priya M. | 5 | Absolutely fresh and packed with nutrients! Highly recommend. | 2 weeks ago | 248 | 5
+Sunflower Microgreens | Amit K. | 5 | Great quality microgreens. Perfect for my smoothie bowls. | 1 week ago | 248 | 5
+Sunflower Microgreens | Sneha P. | 4 | Good taste and freshness. Quick delivery to Bangalore. | 3 days ago | 248 | 5
+Radish Microgreens | Rajesh T. | 5 | Love the spicy kick! Amazing for my salads. | 1 week ago | 156 | 4.5
+Radish Microgreens | Anjali S. | 4 | Very fresh. A bit spicier than expected but tasty. | 5 days ago | 156 | 4.5
+Radish Microgreens | Vikram D. | 4 | Decent quality. Will order again. | 2 days ago | 156 | 4.5
+Mustard Microgreens | Deepak M. | 5 | Perfect bold flavor. Exactly what I wanted! | 1 week ago | 89 | 5
+Mustard Microgreens | Riya K. | 5 | Excellent quality and taste. Highly satisfactory. | 4 days ago | 89 | 5
+Mustard Microgreens | Nikhil R. | 5 | Best microgreens I've had. Definitely ordering again. | 2 days ago | 89 | 5
+Wheat Grass | Anu V. | 5 | Amazing health benefits! I feel energized after drinking. | 1 week ago | 312 | 5
+Wheat Grass | Sanjay K. | 5 | Fresh and potent. Great for my morning routine. | 3 days ago | 312 | 5
+Wheat Grass | Meera G. | 5 | Excellent quality. Worth every penny for the health benefits. | 1 day ago | 312 | 5
+Mixed Microgreens | Sarah D. | 5 | Love the variety! Great mix of flavors. | 5 days ago | 127 | 4.5
+Mixed Microgreens | Karan P. | 4 | Good mix of microgreens. Stays fresh for days. | 2 days ago | 127 | 4.5
+Mixed Microgreens | Neha S. | 4 | Versatile and healthy. Perfect for my salads. | 1 day ago | 127 | 4.5
+```
+
+---
+
+## HOW TO USE THIS DATA
+
+### Method 1: Copy-Paste into Google Sheets (Easiest)
+
+1. **Create Products Sheet:**
+   - Open Google Sheets
+   - Select cell A1
+   - Paste all data from PRODUCTS SHEET above
+
+2. **Create Reviews Sheet:**
+   - Add new sheet named "Reviews"
+   - Select cell A1
+   - Paste all data from REVIEWS SHEET above
+
+### Method 2: Manual Entry (If you prefer)
+
+Just follow the table structure above and enter each row manually.
+
+---
+
+## IMPORTANT NOTES
+
+### Column Format
+- **Product Name**: Must match exactly between sheets (case-sensitive)
+- **Price**: Just numbers (no ₹ symbol)
+- **Image**: Path to image file (relative path in your project)
+- **Rating**: 1-5 scale
+- **Benefits & Usage**: Separate items with semicolons (;)
+- **Date**: Any readable format ("2 weeks ago", "yesterday", etc.)
+
+### Example of Missing Data Handling
+- If a product has no reviews: Website will show "No reviews yet"
+- If Review Count is missing: Uses count of actual reviews
+- If Avg Rating missing: Calculates automatically from individual ratings
+- If image is missing: Browser shows broken image icon
+
+### Avoid These Mistakes
+❌ `Sunflower Microgreens` vs `sunflower microgreens` - Must match exactly!
+❌ `₹100` instead of `100` - Just use the number
+❌ `High in protein, Rich in vitamin E` - Use semicolon, not comma
+❌ Extra spaces: `Sunflower Microgreens ` has trailing space - Remove it
+
+---
+
+## TESTING YOUR DATA
+
+After pasting, refresh your website and:
+1. Open F12 Developer Console
+2. Look for: `✓ Product data loaded from Google Sheets: 5 products`
+3. Click on product ratings to see reviews
+4. Everything should work!
+
+---
+
+## UPDATING IN FUTURE
+
+### Add New Review
+Just add a new row to the Reviews sheet:
+```
+Product Name | Reviewer Name | Rating | Review Text | Date | Review Count | Avg Rating
+Sunflower Microgreens | New Customer | 5 | This is amazing! | yesterday | 249 | 5
+```
+
+### Change Product Price
+Just edit column B in the Products sheet. Website picks it up automatically on next page load.
+
+### Add New Product
+Add a new row to Products sheet with all required fields. It will appear on website automatically.
+
+---
+
+## FAQ
+
+**Q: Can I have different review counts for the same product?**
+A: No, the count should be consistent. Update it when you add new reviews.
+
+**Q: What if I delete a review?**
+A: Just delete the row from Reviews sheet. Website will update automatically.
+
+**Q: Can I have products with no reviews?**
+A: Yes! If a product has no reviews in the Reviews sheet, it will show "No reviews yet" on the website.
+
+**Q: Do I need to redeploy the Apps Script?**
+A: No! Just edit the Google Sheets directly. Website fetches data from sheets automatically.
+
+---
+
+Good luck! 🌱
