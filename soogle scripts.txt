@@ -1,0 +1,179 @@
+// ============================================
+// GOOGLE APPS SCRIPT - Aishaura API
+// Deploy this as a Web App to serve JSON data
+// ============================================
+
+// Configuration
+const SHEET_ID = 'YOUR_SHEET_ID_HERE'; // Replace with your Google Sheet ID
+const PRODUCTS_SHEET = 'Products';
+const REVIEWS_SHEET = 'Reviews';
+
+// Main API endpoint - handles all requests
+function doGet(e) {
+  try {
+    const action = e.parameter.action || 'all';
+    let response = {};
+
+    if (action === 'all') {
+      response = getAllData();
+    } else if (action === 'products') {
+      response = getProducts();
+    } else if (action === 'reviews') {
+      const productName = e.parameter.product;
+      response = getReviewsByProduct(productName);
+    } else {
+      response = { error: 'Invalid action' };
+    }
+
+    return ContentService.createTextOutput(JSON.stringify(response))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// Get all product data with their reviews
+function getAllData() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const productsSheet = ss.getSheetByName(PRODUCTS_SHEET);
+  const reviewsSheet = ss.getSheetByName(REVIEWS_SHEET);
+
+  const productsData = productsSheet.getDataRange().getValues();
+  const reviewsData = reviewsSheet.getDataRange().getValues();
+
+  const products = {};
+
+  // Parse products (skip header row)
+  for (let i = 1; i < productsData.length; i++) {
+    const row = productsData[i];
+    if (!row[0]) break; // Stop at empty rows
+
+    const productName = row[0].toString().trim();
+    products[productName] = {
+      name: productName,
+      price: parseFloat(row[1]) || 0,
+      image: row[2] || '',
+      description: row[3] || '',
+      benefits: parseSemicolonList(row[4]),
+      usage: parseSemicolonList(row[5]),
+      rating: 0,
+      reviews: 0,
+      customerReviews: []
+    };
+  }
+
+  // Parse reviews and attach to products (skip header row)
+  for (let i = 1; i < reviewsData.length; i++) {
+    const row = reviewsData[i];
+    if (!row[0]) break; // Stop at empty rows
+
+    const productName = row[0].toString().trim();
+    if (products[productName]) {
+      const review = {
+        name: row[1] || '',
+        rating: parseFloat(row[2]) || 0,
+        text: row[3] || '',
+        date: row[4] || ''
+      };
+
+      products[productName].customerReviews.push(review);
+      products[productName].reviews = parseFloat(row[5]) || products[productName].customerReviews.length;
+      products[productName].rating = parseFloat(row[6]) || calculateAvgRating(products[productName].customerReviews);
+    }
+  }
+
+  return {
+    success: true,
+    timestamp: new Date().toISOString(),
+    data: products
+  };
+}
+
+// Get just products (without detailed reviews)
+function getProducts() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(PRODUCTS_SHEET);
+  const data = sheet.getDataRange().getValues();
+
+  const products = {};
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (!row[0]) break;
+
+    const productName = row[0].toString().trim();
+    products[productName] = {
+      name: productName,
+      price: parseFloat(row[1]) || 0,
+      image: row[2] || '',
+      description: row[3] || '',
+      benefits: parseSemicolonList(row[4]),
+      usage: parseSemicolonList(row[5])
+    };
+  }
+
+  return {
+    success: true,
+    data: products
+  };
+}
+
+// Get reviews for a specific product
+function getReviewsByProduct(productName) {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(REVIEWS_SHEET);
+  const data = sheet.getDataRange().getValues();
+
+  const reviews = {
+    productName: productName,
+    customerReviews: [],
+    totalReviews: 0,
+    avgRating: 0
+  };
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (!row[0]) break;
+
+    if (row[0].toString().trim() === productName) {
+      reviews.customerReviews.push({
+        name: row[1] || '',
+        rating: parseFloat(row[2]) || 0,
+        text: row[3] || '',
+        date: row[4] || ''
+      });
+    }
+  }
+
+  reviews.totalReviews = data[1][5] ? parseFloat(data[1][5]) : reviews.customerReviews.length;
+  reviews.avgRating = data[1][6] ? parseFloat(data[1][6]) : calculateAvgRating(reviews.customerReviews);
+
+  return {
+    success: true,
+    data: reviews
+  };
+}
+
+// Helper: Parse semicolon-separated list into array
+function parseSemicolonList(str) {
+  if (!str) return [];
+  return str.toString()
+    .split(';')
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}
+
+// Helper: Calculate average rating from reviews
+function calculateAvgRating(reviews) {
+  if (!reviews || reviews.length === 0) return 0;
+  const sum = reviews.reduce((acc, r) => acc + (parseFloat(r.rating) || 0), 0);
+  return Math.round((sum / reviews.length) * 10) / 10;
+}
+
+// Test function (run in Apps Script editor to verify sheet connection)
+function testConnection() {
+  const data = getAllData();
+  Logger.log(JSON.stringify(data, null, 2));
+}
