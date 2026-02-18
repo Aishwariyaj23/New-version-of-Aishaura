@@ -1,0 +1,435 @@
+/***************************************
+ * COMPLETE ORDER PROCESSING SYSTEM *
+ * For Aishaura Microgreens         *
+ ***************************************/
+
+// ======================
+// CONFIGURATION
+// ======================
+const CONFIG = {
+  SPREADSHEET_ID: "1Le-LIcGwuAtDKL8v-rNSKD2ENCLx3TjOsX5gmc0T61Q",
+  SHEET_NAME: "Orders",
+  ADMIN_EMAIL: "aishauramicrogreens@gmail.com",
+  BUSINESS_NAME: "Aishaura Microgreens",
+  UPI_ID: "9738560719-0@airtel",
+  BUSINESS_MOBILE: "9738560719",
+  
+  COLUMNS: [
+    "Timestamp", "Order ID", "Customer Name", "Phone", 
+    "Product", "Quantity", "Address", "Notes",
+    "Status", "Payment Status", "Email", "Amount",
+    "Payment Method", "Payment Link", "QR Code",
+    "WhatsApp Message", "UTR Reference"
+  ],
+  
+  TRACKING_URL: "https://track.aishaura.com/order=",
+  FEEDBACK_URL: "https://feedback.aishaura.com?order=",
+  DEFAULT_DELIVERY_TIME: "today by 6 PM"
+};
+
+// WhatsApp message templates
+const WHATSAPP_TEMPLATES = {
+  ORDER_CONFIRMED: {
+    template: `Namaskara {name}! 🌱\n\n*Your {business} Order #{orderId}*\n💰 Amount: ₹{amount}\n\n🔗 Pay Now: {paymentLink}\n📲 Scan QR: {qrCode}\n\nWe've received your order and will process it shortly.`,
+    trigger: "Pending Payment"
+  },
+  PAYMENT_RECEIVED: {
+    template: `Hello {name}! ✅\n\n*Payment Received*\nOrder #: {orderId}\nAmount: ₹{amount}\n\nWe're now preparing your {product} microgreens.`,
+    trigger: "Payment Verified"
+  },
+  OUT_FOR_DELIVERY: {
+    template: `Hello {name}! 🚚\n\n*Your Order is Out for Delivery*\nOrder #: {orderId}\n\nExpected delivery: {deliveryTime}\n\nTrack your order: {trackingLink}`,
+    trigger: "Out for Delivery"
+  },
+  DELIVERED: {
+    template: `Hello {name}! 🎉\n\n*Order Delivered Successfully*\nOrder #: {orderId}\n\nHope you enjoy your {product} microgreens!\n\nPlease share your feedback: {feedbackLink}`,
+    trigger: "Delivered"
+  }
+};
+
+// ======================
+// CORE ORDER PROCESSING
+// ======================
+function doPost(e) {
+  try {
+    // Parse incoming data
+    const params = e.postData ? JSON.parse(e.postData.contents) : e.parameter;
+    
+    // Generate order ID and prepare data
+    const orderId = generateOrderId();
+    const orderData = [
+      new Date(),
+      orderId,
+      params.name || "",
+      params.phone,
+      params.product || "Mixed Microgreens",
+      params.quantity || "1",
+      params.address || "",
+      params.notes || "",
+      params.payment_method === 'upi' ? 'Pending UPI Payment' : 'Pending COD',
+      "Pending",
+      params.email || "",
+      parseFloat(params.amount).toFixed(2),
+      params.payment_method || "UPI",
+      "", "", "", ""
+    ];
+
+    // Write to sheet
+    const sheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID).getSheetByName(CONFIG.SHEET_NAME);
+    sheet.appendRow(orderData);
+
+    // Send email if available
+    if (params.email) {
+      sendOrderConfirmationEmail(params.email, orderId, params.name, params.amount);
+    }
+
+    // Return simple JSON response
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      orderId: orderId
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: error.message
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doOptions() {
+  return HtmlService.createHtmlOutput()
+    .setContent('') // Empty content for preflight
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ======================
+// NOTIFICATION SYSTEM
+// ======================
+function sendInitialNotifications(orderId, params, paymentLink, qrCode) {
+  try {
+    // 1. Generate WhatsApp message
+    const whatsappMsg = generateWhatsappMessage(
+      WHATSAPP_TEMPLATES.ORDER_CONFIRMED.template,
+      {
+        name: params.name,
+        orderId: orderId,
+        amount: params.amount,
+        product: params.product || "microgreens",
+        paymentLink: paymentLink,
+        qrCode: qrCode
+      }
+    );
+    
+    // 2. Store WhatsApp message in sheet
+    storeWhatsAppMessage(orderId, whatsappMsg);
+    
+    // 3. Send email confirmation if available
+    if (params.email) {
+      sendOrderConfirmationEmail(
+        params.email, 
+        orderId, 
+        params.name, 
+        params.amount, 
+        paymentLink, 
+        qrCode
+      );
+    }
+    
+    // 4. Notify admin
+    sendAdminNotification("NEW_ORDER", orderId, params.name, params.amount);
+    
+  } catch (error) {
+    console.error("Notification failed (non-critical):", error);
+  }
+}
+
+function sendStatusWhatsApp(orderId, newStatus = null) {
+  try {
+    const { sheet, data, headers } = getSheetData();
+    const order = getOrderById(orderId, data, headers);
+    
+    // Update status if provided
+    if (newStatus) {
+      updateOrderStatus(orderId, newStatus, sheet, headers);
+    }
+    
+    // Get appropriate template
+    const template = getTemplateForStatus(newStatus || order.status);
+    const message = generateWhatsappMessage(template, order);
+    
+    // Store message in sheet
+    const whatsappCol = headers.indexOf("WhatsApp Message") + 1;
+    const orderRow = getOrderRow(orderId, sheet, data);
+    sheet.getRange(orderRow, whatsappCol).setValue(message);
+    
+    // Send via WhatsApp
+    return sendWhatsApp(order.phone, message);
+    
+  } catch (error) {
+    console.error(`Failed to send status update for ${orderId}:`, error);
+    throw error;
+  }
+}
+
+// ======================
+// SUPPORTING FUNCTIONS
+// ======================
+function generateOrderId() {
+  const datePart = Utilities.formatDate(new Date(), "IST", "yyyyMMdd");
+  const timePart = Utilities.formatDate(new Date(), "IST", "HHmmss");
+  return `AISH-${datePart}-${timePart}`;
+}
+
+function generateUPILink(amount, orderId) {
+  return `upi://pay?pa=${CONFIG.UPI_ID}` +
+         `&pn=${encodeURIComponent(CONFIG.BUSINESS_NAME)}` +
+         `&am=${parseFloat(amount).toFixed(2)}` +
+         `&tn=Order%20${orderId}` +
+         `&cu=INR`;
+}
+
+function generateQRCode(upiLink) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+}
+
+function generateWhatsappMessage(template, orderData) {
+  return template
+    .replace(/{name}/g, orderData.name || "")
+    .replace(/{orderId}/g, orderData.orderId || "")
+    .replace(/{amount}/g, orderData.amount || "0")
+    .replace(/{product}/g, orderData.product || "microgreens")
+    .replace(/{business}/g, CONFIG.BUSINESS_NAME)
+    .replace(/{paymentLink}/g, orderData.payment_link || "")
+    .replace(/{qrCode}/g, orderData.qr_code || "")
+    .replace(/{deliveryTime}/g, CONFIG.DEFAULT_DELIVERY_TIME)
+    .replace(/{trackingLink}/g, CONFIG.TRACKING_URL + (orderData.orderId || ""))
+    .replace(/{feedbackLink}/g, CONFIG.FEEDBACK_URL + (orderData.orderId || ""));
+}
+
+function getTemplateForStatus(status) {
+  if (!status) return WHATSAPP_TEMPLATES.ORDER_CONFIRMED.template;
+  
+  for (const [key, config] of Object.entries(WHATSAPP_TEMPLATES)) {
+    if (status.toLowerCase().includes(config.trigger.toLowerCase())) {
+      return config.template;
+    }
+  }
+  return WHATSAPP_TEMPLATES.ORDER_CONFIRMED.template;
+}
+
+function storeWhatsAppMessage(orderId, message) {
+  const { sheet, data, headers } = getSheetData();
+  const whatsappCol = headers.indexOf("WhatsApp Message") + 1;
+  const orderRow = getOrderRow(orderId, sheet, data);
+  sheet.getRange(orderRow, whatsappCol).setValue(message);
+}
+
+function sendWhatsApp(phone, message) {
+  const cleanPhone = phone.toString().replace(/\D/g, '');
+  const formattedPhone = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+  
+  if (formattedPhone.length !== 12) {
+    throw new Error("Invalid Indian phone number format");
+  }
+  
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedPhone}&text=${encodeURIComponent(message)}`;
+  
+  // Note: This will only work if user clicks the link manually
+  // For automated WhatsApp messages you need a WhatsApp Business API solution
+  return whatsappUrl;
+}
+
+// ======================
+// SHEET MANAGEMENT
+// ======================
+function getSheet() {
+  const spreadsheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
+  let sheet = spreadsheet.getSheetByName(CONFIG.SHEET_NAME);
+  
+  if (!sheet) {
+    sheet = spreadsheet.insertSheet(CONFIG.SHEET_NAME);
+    sheet.appendRow(CONFIG.COLUMNS);
+  }
+  return sheet;
+}
+
+function getSheetData() {
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
+  return { sheet, data, headers: data[0] };
+}
+
+function getOrderById(orderId, data, headers) {
+  const row = data.find(row => row[1] === orderId);
+  if (!row) throw new Error(`Order ${orderId} not found`);
+  
+  const order = {};
+  headers.forEach((header, index) => {
+    order[header.toLowerCase().replace(/ /g, '_')] = row[index];
+  });
+  return order;
+}
+
+function updateOrderStatus(orderId, newStatus, sheet, headers) {
+  const statusCol = headers.indexOf("Status") + 1;
+  const orderRow = getOrderRow(orderId, sheet);
+  sheet.getRange(orderRow, statusCol).setValue(newStatus);
+}
+
+function getOrderRow(orderId, sheet, data) {
+  if (!data) data = sheet.getDataRange().getValues();
+  const rowIndex = data.findIndex(row => row[1] === orderId);
+  if (rowIndex === -1) throw new Error(`Order ${orderId} not found`);
+  return rowIndex + 1;
+}
+
+// ======================
+// EMAIL NOTIFICATIONS
+// ======================
+function sendOrderConfirmationEmail(email, orderId, name, amount, paymentLink, qrCode) {
+  const htmlBody = `
+    <div style="font-family: Arial; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #27ae60;">Thank you for your order, ${name}!</h2>
+      <p><strong>Order #${orderId}</strong> - ₹${amount}</p>
+      
+      <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin-top: 0;">Please complete your payment:</p>
+        <a href="${paymentLink}" style="display: inline-block; background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-bottom: 15px;">PAY NOW</a>
+        <p>Or scan this QR code:</p>
+        <img src="${qrCode}" width="180" style="display: block; margin: 10px auto;">
+      </div>
+      
+      <p>We'll notify you when your ${CONFIG.BUSINESS_NAME} order is processed.</p>
+    </div>
+  `;
+  
+  MailApp.sendEmail({
+    to: email,
+    subject: `[${CONFIG.BUSINESS_NAME}] Order Confirmation #${orderId}`,
+    htmlBody: htmlBody
+  });
+}
+
+function sendAdminNotification(type, orderId, name, amount) {
+  const templates = {
+    NEW_ORDER: {
+      subject: `📦 New Order #${orderId}`,
+      body: `New order from ${name} for ₹${amount}`
+    },
+    PAYMENT_RECEIVED: {
+      subject: `💰 Payment Received #${orderId}`,
+      body: `Payment of ₹${amount} confirmed for order ${orderId}`
+    }
+  };
+  
+  MailApp.sendEmail({
+    to: CONFIG.ADMIN_EMAIL,
+    subject: templates[type].subject,
+    body: templates[type].body
+  });
+}
+
+
+
+
+// ======================
+// INSTALLATION
+// ======================
+function setup() {
+  // 1. Verify columns exist
+  ensureColumnsExist();
+  
+  // 2. Set up status dropdowns
+  setupStatusDropdowns();
+  
+  // 3. Set up triggers
+  ScriptApp.newTrigger('onEdit')
+    .forSpreadsheet(SpreadsheetApp.getActive())
+    .onEdit()
+    .create();
+    
+  console.log("Setup complete");
+}
+
+function ensureColumnsExist() {
+  const sheet = getSheet();
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  
+  CONFIG.COLUMNS.forEach((col, index) => {
+    if (!headers.includes(col)) {
+      sheet.getRange(1, headers.length + 1).setValue(col);
+    }
+  });
+}
+
+function setupStatusDropdowns() {
+  const sheet = getSheet();
+  const statusCol = CONFIG.COLUMNS.indexOf("Status") + 1;
+  const lastRow = sheet.getLastRow();
+  
+  const statusOptions = Object.values(WHATSAPP_TEMPLATES).map(t => t.trigger);
+  const rule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(statusOptions)
+    .setAllowInvalid(false)
+    .build();
+  
+  if (lastRow > 1) {
+    sheet.getRange(2, statusCol, lastRow - 1, 1).setDataValidation(rule);
+  }
+}
+
+// ======================
+// EDIT TRIGGER
+// ======================
+function onEdit(e) {
+  const range = e.range;
+  const sheet = range.getSheet();
+  
+  if (sheet.getName() === CONFIG.SHEET_NAME && 
+      range.getColumn() === CONFIG.COLUMNS.indexOf("Status") + 1) {
+    
+    const row = range.getRow();
+    if (row === 1) return;
+    
+    const orderId = sheet.getRange(row, 2).getValue();
+    const newStatus = range.getValue();
+    storeWhatsAppMessage(orderId, newStatus);
+  }
+}
+
+function testDoPost() {
+  const mockData = {
+    parameter: {
+      name: "Test Customer",
+      phone: "9876543210",
+      email: "test@example.com",
+      address: "123 Test St",
+      product: "Sunflower Microgreens",
+      quantity: "100",
+      amount: "100.00",
+      payment_method: "upi",
+      notes: "Test order from script"
+    }
+  };
+  
+  Logger.log("Starting test...");
+  const result = doPost(mockData);
+  Logger.log("Response: " + result.getContent());
+  
+  // Verify the sheet
+  const sheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID).getSheetByName(CONFIG.SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  const lastRow = data[data.length-1];
+  Logger.log("Last row in sheet: " + lastRow);
+}
+function testSheetAccess() {
+  try {
+    const sheet = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID).getSheetByName(CONFIG.SHEET_NAME);
+    const testData = [new Date(), "TEST", "Access Test"];
+    sheet.appendRow(testData);
+    Logger.log("Successfully wrote test data to sheet");
+  } catch (e) {
+    Logger.log("Sheet access error: " + e.toString());
+  }
+}

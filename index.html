@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aishaura Microgreens</title>
   <meta name="description" content=" Aishaura microgreens offers fresh, chemical-free microgreens grown locally in Bangalore. Packed with nutrition, delivered to your doorstep. Order now for healthy living!">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,36 +13,115 @@
 </head>
 <body>
 <header aria-label="Site logo and brand title">
-  <img id="logo-img" class="logo" alt="Aishaura Microgreens Logo">
-  <h1>Aishaura Microgreens</h1>
-  <div><p>Fresh, Sustainable Nutrition for Every Home</p>
-
+  <div class="hero-shell site-container">
+    <div class="hero-brand">
+      <img id="logo-img" class="logo" alt="Aishaura Microgreens Logo">
+      <h1>Aishaura Microgreens</h1>
+      <p>Fresh, Sustainable Nutrition for Every Home</p>
+      <div class="hero-actions">
+        <a href="#products" class="hero-btn hero-btn-primary">Shop Fresh Now</a>
+        <a href="#why-us" class="hero-btn hero-btn-secondary">Why Aishaura</a>
+      </div>
+    </div>
+    <div class="hero-stats" aria-label="Key highlights">
+      <div class="hero-stat">
+        <span class="hero-stat-value">7-10 Days</span>
+        <span class="hero-stat-label">Fresh Harvest Cycle</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">40x</span>
+        <span class="hero-stat-label">Higher Nutrient Density</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-value">Bangalore</span>
+        <span class="hero-stat-label">Local Weekly Delivery</span>
+      </div>
+    </div>
   </div>
 </header>
 
 <div id="cart-container">
-  <div id="cart-icon">🛒 <span id="cart-count">0</span></div>
-  <div id="cart-dropdown">
+  <div id="cart-icon" aria-label="Open cart" role="button" tabindex="0">
+    <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+    <span id="cart-count">0</span>
+  </div>
+  <div id="cart-dropdown" role="dialog" aria-modal="true" aria-label="Shopping cart">
+    <div class="cart-drawer-header">
+      <h3>Your Cart</h3>
+      <button type="button" id="cart-close" aria-label="Close cart"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
     <div id="cart-items"></div>
     <div id="cart-summary">
-      <div>Subtotal: <span id="cart-subtotal">₹0</span></div>
+      <div>Subtotal: <span id="cart-subtotal">INR 0</span></div>
       <div>Delivery: <span id="cart-delivery">FREE</span></div>
-      <div id="cart-total">Total: ₹0</div>
+      <div id="cart-total">Total: INR 0</div>
     </div>
-    <button id="view-cart">View Cart</button>
-    <button id="checkout-btn">Proceed to Checkout</button>
-    <button id="clear-cart">Clear Cart</button>
+    <div class="cart-drawer-actions">
+      <button id="view-cart">View Cart</button>
+      <button id="checkout-btn">Proceed to Checkout</button>
+      <button id="clear-cart">Clear Cart</button>
+    </div>
   </div>
 </div>
 
 <nav aria-label="Main site navigation">
-  <a href="#about">About</a>
-  <a href="#benefits">Why Microgreens</a>
-  <a href="#why-us">Why Us</a>
-  <a href="#products">Products</a>
-  <a href="#recipes">Recipes</a>
-  <a href="#" id="nav-contact" title="Contact us" aria-label="Contact us"><i class="fab fa-whatsapp"></i> Contact</a>
+  <div class="site-container nav-inner">
+    <a href="#about">About</a>
+    <a href="#benefits">Why Microgreens</a>
+    <a href="#why-us">Why Us</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#products">Products</a>
+    <a href="#recipes">Recepie</a>
+    <a href="#" id="nav-contact" title="Contact us" aria-label="Contact us"><i class="fab fa-whatsapp"></i> Contact</a>
+  </div>
 </nav>
+
+<section id="quick-highlights" class="quick-highlights" aria-label="Why customers choose us">
+  <div class="quick-highlights-grid">
+    <div class="quick-highlight-card">
+      <span class="quick-highlight-icon"><i class="fa-solid fa-seedling"></i></span>
+      <h3>Chemical Free</h3>
+      <p>Grown clean and harvested fresh in small batches.</p>
+    </div>
+    <div class="quick-highlight-card">
+      <span class="quick-highlight-icon"><i class="fa-solid fa-bolt"></i></span>
+      <h3>Nutrient Dense</h3>
+      <p>Microgreens deliver concentrated nutrition in every bite.</p>
+    </div>
+    <div class="quick-highlight-card">
+      <span class="quick-highlight-icon"><i class="fa-solid fa-truck-fast"></i></span>
+      <h3>Farm To Door</h3>
+      <p>Fast local delivery across Bangalore on weekly slots.</p>
+    </div>
+    <div class="quick-highlight-card">
+      <span class="quick-highlight-icon"><i class="fa-solid fa-recycle"></i></span>
+      <h3>Eco Focused</h3>
+      <p>Low-water growing and thoughtful, low-waste operations.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how-it-works" class="how-it-works" aria-label="How ordering works">
+  <h2>How It Works</h2>
+  <p class="section-subtitle">From harvest to your kitchen in three simple steps.</p>
+  <div class="how-it-works-grid">
+    <article class="how-step">
+      <span class="how-step-icon"><i class="fa-solid fa-seedling"></i></span>
+      <h3>1. Fresh Harvest</h3>
+      <p>We harvest each batch in small cycles for peak freshness and nutrition.</p>
+    </article>
+    <article class="how-step">
+      <span class="how-step-icon"><i class="fa-solid fa-basket-shopping"></i></span>
+      <h3>2. Place Your Order</h3>
+      <p>Choose your favorite greens, set quantity, and checkout in minutes.</p>
+    </article>
+    <article class="how-step">
+      <span class="how-step-icon"><i class="fa-solid fa-truck-fast"></i></span>
+      <h3>3. Weekly Delivery</h3>
+      <p>Receive your greens at your doorstep in our scheduled Bangalore delivery slots.</p>
+    </article>
+  </div>
+</section>
 
 
 <section id="about">
@@ -54,7 +132,7 @@
       <ul>
         <li><strong>Family-run urban farm</strong> with a personal touch</li>
         <li><strong>Eco-conscious:</strong> minimal waste, local delivery, & responsible practices</li>
-        <li><strong>Transparent food traceability</strong> — from seed to plate</li>
+        <li><strong>Transparent food traceability</strong> &mdash; from seed to plate</li>
          <li><strong> 100% organic </strong> <strong>Freshly harvested no chemicals used</strong></li>
         </ul>
     </div>
@@ -73,7 +151,7 @@
       <h2>Why Choose Microgreens?</h2>
       <ul>
         <li><strong>Up to 40x more nutrients</strong> than mature greens</li>
-        <li><strong>Harvest-ready in 7–10 days</strong> — ultra fresh produce always</li>
+        <li><strong>Harvest-ready in 7&ndash;10 days</strong> &mdash; ultra fresh produce always</li>
         <li><strong>Eco-friendly farming</strong>: 90% less water, no chemical pesticides</li>
         <li><strong>Flavor variety</strong>: from spicy to sweet to nutty</li>
         <li><strong>Perfect for every dish</strong>: salads, smoothies, sandwiches, curries & pizza!</li>
@@ -82,153 +160,54 @@
   </div>
 </section>
 
-<section id="why-us">
+<section id="why-us" class="why-us-upgrade" aria-label="Reasons to choose Aishaura Microgreens">
   <h2>Why Choose Us?</h2>
-  <ul>
-    <li>Homegrown & pesticide-free using sustainable practices</li>
-    <li>Harvest-to-door freshness: orders cut the same day of delivery</li>
-    <li>Eco packaging and farm-to-fork traceability</li>
-  </ul>
+  <p class="section-subtitle">Clean growing, same-day harvest, and conscious delivery designed for everyday wellness.</p>
+
+  <div class="why-us-grid">
+    <article class="why-us-card">
+      <span class="why-us-icon" aria-hidden="true"><i class="fa-solid fa-seedling"></i></span>
+      <h3>Homegrown & Chemical Free</h3>
+      <p>Raised in controlled small batches with no synthetic pesticides, so your greens stay clean and naturally vibrant.</p>
+    </article>
+
+    <article class="why-us-card">
+      <span class="why-us-icon" aria-hidden="true"><i class="fa-solid fa-scissors"></i></span>
+      <h3>Harvested The Same Day</h3>
+      <p>Orders are cut fresh on delivery day to lock in crunch, flavor, and nutrient quality from tray to plate.</p>
+    </article>
+
+    <article class="why-us-card">
+      <span class="why-us-icon" aria-hidden="true"><i class="fa-solid fa-recycle"></i></span>
+      <h3>Eco Packaging & Traceability</h3>
+      <p>Low-waste packaging and transparent farm-to-fork practices so you know exactly what reaches your kitchen.</p>
+    </article>
+  </div>
+
+  <div class="why-us-trust-strip" aria-label="Trust highlights">
+    <span><i class="fa-solid fa-leaf" aria-hidden="true"></i> Weekly fresh cycles</span>
+    <span><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Local Bangalore delivery</span>
+    <span><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Wellness-first produce</span>
+  </div>
 </section>
 
 <section id="products">
   <h2>Our Products</h2>
-  <div class="gallery">
-    <div class="card" role="listitem">
-      <img src="images/sunflower.jpg" alt="Sunflower Microgreens">
-      <div class="card-rating">
-        <span class="stars">★★★★★</span>
-        <span class="rating-count">(248)</span>
-      </div>
-      <div class="gallery-title">Sunflower Microgreens</div>
-      <div class="product-price">
-        <span class="discounted-price">₹100</span>
-        <span class="original-price">₹180</span>
-        <span class="savings-badge">44% OFF</span>
-      </div>
-      <ul class="benefits-list">
-        <li>High in protein</li>
-        <li>Rich in vitamin E & B6</li>
-        <li>Muscle recovery support</li>
-      </ul>
-      <div class="quantity-selector">
-        <button class="quantity-btn minus">-</button>
-        <input type="number" value="50" min="50" step="50" class="quantity-input">
-        <span class="quantity-unit">gm</span>
-        <button class="quantity-btn plus">+</button>
-      </div>
-      <button class="add-to-cart" data-product="Sunflower Microgreens" data-price="100">+ Add to Cart</button>
-    </div>
-    
-    <div class="card" role="listitem">
-      <img src="images/radish.jpg" alt="Radish Microgreens">
-      <div class="card-rating">
-        <span class="stars">★★★★☆</span>
-        <span class="rating-count">(156)</span>
-      </div>
-      <div class="gallery-title">Radish Microgreens</div>
-      <div class="product-price">
-        <span class="discounted-price">₹100</span>
-        <span class="original-price">₹180</span>
-        <span class="savings-badge">44% OFF</span>
-      </div>
-      <ul class="benefits-list">
-        <li>Spicy & vitamin-rich</li>
-        <li>Supports digestion</li>
-        <li>High in vitamin C</li>
-      </ul>
-      <div class="quantity-selector">
-        <button class="quantity-btn minus">-</button>
-        <input type="number" value="50" min="50" step="50" class="quantity-input">
-        <span class="quantity-unit">gm</span>
-        <button class="quantity-btn plus">+</button>
-      </div>
-      <button class="add-to-cart" data-product="Radish Microgreens" data-price="100">+ Add to Cart</button>
-    </div>
-    
-    <div class="card" role="listitem">
-      <img src="images/mustard.png" alt="Mustard Microgreens">
-      <div class="card-rating">
-        <span class="stars">★★★★★</span>
-        <span class="rating-count">(89)</span>
-      </div>
-      <div class="gallery-title">Mustard Microgreens</div>
-      <div class="product-price">
-        <span class="discounted-price">₹90</span>
-        <span class="original-price">₹170</span>
-        <span class="savings-badge">47% OFF</span>
-      </div>
-      <ul class="benefits-list">
-        <li>Bold & fiery flavor</li>
-        <li>Rich in vitamin K</li>
-        <li>Bone health support</li>
-      </ul>
-      <div class="quantity-selector">
-        <button class="quantity-btn minus">-</button>
-        <input type="number" value="50" min="50" step="50" class="quantity-input">
-        <span class="quantity-unit">gm</span>
-        <button class="quantity-btn plus">+</button>
-      </div>
-      <button class="add-to-cart" data-product="Mustard Microgreens" data-price="90">+ Add to Cart</button>
-    </div>
-    
-    <div class="card" role="listitem">
-      <img src="images/wheat-grass.jpg" alt="Wheat Grass">
-      <div class="card-rating">
-        <span class="stars">★★★★★</span>
-        <span class="rating-count">(312)</span>
-      </div>
-      <div class="gallery-title">Wheat Grass</div>
-      <div class="product-price">
-        <span class="discounted-price">₹120</span>
-        <span class="original-price">₹200</span>
-        <span class="savings-badge">40% OFF</span>
-      </div>
-      <ul class="benefits-list">
-        <li>Nutrient-dense superfood</li>
-        <li>Powerful detoxifier</li>
-        <li>Boosts immunity</li>
-      </ul>
-      <div class="quantity-selector">
-        <button class="quantity-btn minus">-</button>
-        <input type="number" value="50" min="50" step="50" class="quantity-input">
-        <span class="quantity-unit">gm</span>
-        <button class="quantity-btn plus">+</button>
-      </div>
-      <button class="add-to-cart" data-product="Wheat Grass" data-price="120">+ Add to Cart</button>
-    </div>
-    
-    <div class="card" role="listitem">
-      <img src="images/mixed.jpg" alt="Mixed Microgreens">
-      <div class="card-rating">
-        <span class="stars">★★★★☆</span>
-        <span class="rating-count">(127)</span>
-      </div>
-      <div class="gallery-title">Mixed Microgreens</div>
-      <div class="product-price">
-        <span class="discounted-price">₹120</span>
-        <span class="original-price">₹200</span>
-        <span class="savings-badge">40% OFF</span>
-      </div>
-      <ul class="benefits-list">
-        <li>Diverse nutrient range</li>
-        <li>Multiple health benefits</li>
-        <li>Variety of flavors</li>
-      </ul>
-      <div class="quantity-selector">
-        <button class="quantity-btn minus">-</button>
-        <input type="number" value="50" min="50" step="50" class="quantity-input">
-        <span class="quantity-unit">gm</span>
-        <button class="quantity-btn plus">+</button>
-      </div>
-      <button class="add-to-cart" data-product="Mixed Microgreens" data-price="120">+ Add to Cart</button>
-    </div>
-    </div>
+  <p class="section-subtitle">Freshly harvested, nutrient-rich microgreens ready to add life to your meals.</p>
+  <div class="products-toolbar" id="products-toolbar" aria-label="Filter products">
+    <button type="button" class="product-filter active" data-filter="all">All</button>
+    <button type="button" class="product-filter" data-filter="top-rated">Top Rated</button>
+    <button type="button" class="product-filter" data-filter="in-stock">In Stock</button>
+    <button type="button" class="product-filter" data-filter="offers">Offers</button>
+  </div>
+  <div class="gallery" id="products-gallery">
+    <!-- Products will be loaded here from Google Sheets by JavaScript -->
   </div>
 </section>
 
 <section id="recipes">
-  <h2>Recipe Ideas</h2>
+  <h2>Recepie Ideas</h2>
+  <p class="section-subtitle">Simple ways to enjoy your microgreens every day.</p>
   <div class="gallery recipes-flex">
     <div class="card recipe-art">
       <img src="images/avocado-toast.jpg" alt="Microgreens Avocado Toast">
@@ -249,13 +228,91 @@
   </div>
 </section>
 
-<section id="contact">
-  <h2>Contact Us</h2>
-  <p><b>Email:</b> aishauramicrogreens@gmail.com</p>
-  <p><b>WhatsApp: 8073047946 </b></p>
-  <p><b>Instagram: aishaura_microgreens</b></p>
-  <p><b>Delivery:</b> Every Friday • Book by Thursday night</p>
-  <p><b>Delivered throughout Bangalore</b></p>
+<section id="testimonials" class="testimonials" aria-label="Customer voices">
+  <h2>Customer Voices</h2>
+  <p class="section-subtitle">What regular buyers say about freshness, flavor, and delivery.</p>
+  <div class="testimonials-grid">
+    <article class="testimonial-card">
+      <p>"Clean and fresh every single week. My salads have never felt this alive."</p>
+      <h3>Ritika S.</h3>
+      <span>Indiranagar</span>
+    </article>
+    <article class="testimonial-card">
+      <p>"Sunflower greens are super crunchy, and delivery timing has been reliable."</p>
+      <h3>Manoj L.</h3>
+      <span>Whitefield</span>
+    </article>
+    <article class="testimonial-card">
+      <p>"The quality is consistent and perfect for smoothies and sandwich toppers."</p>
+      <h3>Sneha B.</h3>
+      <span>JP Nagar</span>
+    </article>
+  </div>
+</section>
+
+
+<section id="contact" class="contact-section" aria-label="Contact details and delivery schedule">
+  <div class="contact-header">
+    <h2>Contact Us</h2>
+    <span class="contact-response-badge"><i class="fa-regular fa-clock" aria-hidden="true"></i> Usually replies in under 30 minutes</span>
+    <p class="section-subtitle">Reach out for orders, custom requirements, or delivery support.</p>
+  </div>
+
+  <div class="contact-actions" aria-label="Quick contact actions">
+    <a href="https://wa.me/918073047946" target="_blank" rel="noopener noreferrer" class="contact-action-btn" aria-label="Chat on WhatsApp">
+      <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
+    </a>
+    <a href="https://www.instagram.com/aishaura_microgreens/" target="_blank" rel="noopener noreferrer" class="contact-action-btn" aria-label="Open Instagram">
+      <i class="fab fa-instagram" aria-hidden="true"></i> Instagram
+    </a>
+    <a href="mailto:aishauramicrogreens@gmail.com" class="contact-action-btn" aria-label="Send email">
+      <i class="fa-regular fa-envelope" aria-hidden="true"></i> Email
+    </a>
+  </div>
+
+  <div class="contact-grid">
+    <article class="contact-item" aria-label="Email Aishaura Microgreens">
+      <span class="contact-icon" aria-hidden="true"><i class="fa-regular fa-envelope"></i></span>
+      <div class="contact-copy">
+        <h3>Email</h3>
+        <p><a class="contact-value-link" href="mailto:aishauramicrogreens@gmail.com">aishauramicrogreens@gmail.com</a></p>
+      </div>
+      <button type="button" class="contact-copy-btn" data-copy="aishauramicrogreens@gmail.com" data-copy-label="Email">
+        <i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>
+      </button>
+    </article>
+
+    <article class="contact-item" aria-label="Contact on WhatsApp">
+      <span class="contact-icon" aria-hidden="true"><i class="fab fa-whatsapp"></i></span>
+      <div class="contact-copy">
+        <h3>WhatsApp</h3>
+        <p><a class="contact-value-link" href="https://wa.me/918073047946" target="_blank" rel="noopener noreferrer">8073047946</a></p>
+      </div>
+      <button type="button" class="contact-copy-btn" data-copy="8073047946" data-copy-label="WhatsApp number">
+        <i class="fa-regular fa-copy" aria-hidden="true"></i><span>Copy</span>
+      </button>
+    </article>
+
+    <article class="contact-item" aria-label="Open Instagram profile">
+      <span class="contact-icon" aria-hidden="true"><i class="fab fa-instagram"></i></span>
+      <div class="contact-copy">
+        <h3>Instagram</h3>
+        <p><a class="contact-value-link" href="https://www.instagram.com/aishaura_microgreens/" target="_blank" rel="noopener noreferrer">@aishaura_microgreens</a></p>
+      </div>
+    </article>
+
+    <article class="contact-item contact-item-static" aria-label="Delivery timing">
+      <span class="contact-icon" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
+      <div class="contact-copy">
+        <h3>Delivery Slot</h3>
+        <p>Every Friday &middot; Book by Thursday night</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="contact-coverage-wrap">
+    <p class="contact-coverage"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Delivered throughout Bangalore</p>
+  </div>
 </section>
 
 <!-- Product Modal -->
@@ -301,7 +358,7 @@
           <div class="order-totals">
             <div class="total-row">
               <span>Subtotal:</span>
-              <span id="checkout-subtotal">₹0</span>
+              <span id="checkout-subtotal">INR 0</span>
             </div>
             <div class="total-row">
               <span>Delivery:</span>
@@ -309,7 +366,7 @@
             </div>
             <div class="total-row grand-total">
               <span>Total:</span>
-              <span id="checkout-total">₹0</span>
+              <span id="checkout-total">INR 0</span>
             </div>
           </div>
         </div>
@@ -355,7 +412,7 @@
 
   <div class="payment-options">
     <div class="payment-option active" data-method="upi">
-      <div class="payment-icon">💳</div>
+      <div class="payment-icon"><i class="fa-solid fa-qrcode" aria-hidden="true"></i></div>
 
       <div class="payment-details">
         <h3>UPI Payment</h3>
@@ -374,7 +431,7 @@
     </div>
 <!-- 
     <div class="payment-option" data-method="cod">
-      <div class="payment-icon">💰</div>
+      <div class="payment-icon"><i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i></div>
       <div class="payment-details">
         <h3>Payment details will be shared shortly</h3>
       </div>
@@ -386,7 +443,7 @@
     <div id="payment-order-items"></div>
     <div class="total-row grand-total">
       <span>Total:</span>
-      <span id="payment-total">₹0</span>
+      <span id="payment-total">INR 0</span>
     </div>
   </div>
 
@@ -403,11 +460,11 @@
           <p>Thank you for your order! Your order ID is <span id="confirmation-id"></span>.</p>
           <p>Total amount: <span id="confirmation-total"></span></p>
           <p>We'll contact you shortly with delivery details.</p>
-          <p style="margin-top: 15px; font-size: 14px; color: #666;">📲 If you've already made the payment, please share the receipt on WhatsApp for faster processing.</p>
+          <p style="margin-top: 15px; font-size: 14px; color: #666;"><i class="fab fa-whatsapp" aria-hidden="true"></i> If you've already made the payment, please share the receipt on WhatsApp for faster processing.</p>
         </div>
         <div class="checkout-actions">
           <button type="button" id="share-receipt-whatsapp" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Share Receipt via WhatsApp</button>
-          <button type="button" class="btn-continue" onclick="document.getElementById('checkout-modal').style.display='none'">Continue Shopping</button>
+          <button type="button" class="btn-continue" onclick="document.getElementById('checkout-modal').style.display='none'; document.body.style.overflow='auto';">Continue Shopping</button>
         </div>
       </div>
     </div>
@@ -477,15 +534,24 @@
     <p class="loader-text">Growing your fresh order...</p>
   </div>
 </div>
+
+<div id="mobile-mini-cart" class="mobile-mini-cart" aria-live="polite">
+  <div class="mini-cart-summary">
+    <span class="mini-cart-count"><strong id="mini-cart-count">0</strong> items</span>
+    <span class="mini-cart-total" id="mini-cart-total">INR 0.00</span>
+  </div>
+  <button type="button" id="mini-cart-open">View Cart</button>
+</div>
+
 <!-- Floating WhatsApp contact (persistent) -->
 <a href="#" id="floating-whatsapp" class="floating-whatsapp" aria-label="Contact us on WhatsApp" title="Contact us on WhatsApp" data-tooltip="Contact us on WhatsApp">
   <i class="fab fa-whatsapp"></i>
   <span class="whatsapp-text">Chat</span>
   <span class="wa-badge" id="wa-badge" aria-hidden="true">1</span>
-  <button type="button" class="wa-dismiss" id="wa-dismiss" aria-label="Dismiss contact button">×</button>
+  <button type="button" class="wa-dismiss" id="wa-dismiss" aria-label="Dismiss contact button">&times;</button>
 </a>
 <footer>
-  &copy; 2025 Aishaura Microgreens • Grown With Love • Packed With Nutrition
+  <div class="site-container footer-inner">&copy; 2025 Aishaura Microgreens &middot; Grown With Love &middot; Packed With Nutrition</div>
 </footer>
 
 <script src="app.js"></script>
